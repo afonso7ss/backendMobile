@@ -11,5 +11,5 @@ app.get('/api/chamados', chamadoController.getChamados);
 app.post('/api/chamados', chamadoController.createChamado);
 
 app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
+  console.log(`Servidor rodando na portaaa ${PORT}`);
 });
