@@ -1,5 +1,5 @@
+const { Sequelize } = require('sequelize');
 require('dotenv').config();
-const mysql = require('mysql2/promise');
 
 const dbConfig = {
   host: process.env.DB_HOST,
@@ -8,13 +8,20 @@ const dbConfig = {
   database: process.env.DB_NAME
 };
 
-exports.getConnection = async () => {
+// Configurando a conexão com o MySQL
+const sequelize = new Sequelize(dbConfig.database, dbConfig.user, dbConfig.password, {
+  host: dbConfig.host,
+  dialect: 'mysql',
+  logging: false, // Desativa logs SQL no console
+});
+
+(async () => {
   try {
-    const connection = await mysql.createConnection(dbConfig);
-    console.log('conectado ao bancoo')
-    return 
-        connection;
+    await sequelize.authenticate();
+    console.log('Conectado ao banco MySQL com sucesso!');
   } catch (error) {
-    throw error;
+    console.error('Erro ao conectar ao banco:', error.message);
   }
-};
+})();
+
+module.exports = sequelize;
