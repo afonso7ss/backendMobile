@@ -51,12 +51,12 @@ router.get('/chamados', async (req, res) => {
 });
 
 // Breno: chamados do usuario
-router.post('/users/:userId/chamados', async (req, res) => {
+router.get('/users/:userId/chamados', async (req, res) => {
     try {
       const { userId } = req.params;
       const chamados = await Chamado.findAll({
-        where: { userId },
-        include: { model: User, attributes: ['id', 'name', 'matricula'] }, // Opcional: incluir dados do usuário
+        where: { userId: userId },
+        // include: { model: User, attributes: ['id', 'name', 'matricula'] }, // Opcional: incluir dados do usuário
       });
   
       if (chamados.length === 0) {
@@ -86,10 +86,10 @@ router.delete('/chamados/:chamadoId', async (req, res) => {
 });
 
 // atualizar status do chamado
-router.put('/chamados/:chamadoId/status', async (req, res) => {
+router.put('/chamados/:funcionarioId/status', async (req, res) => {
   try {
-    const { chamadoId } = req.params;
-    const { funcionarioId } = req.body;
+    const { funcionarioId } = req.params;
+    const { chamadoId } = req.body;
 
     // Verifica se o funcionário existe
     const funcionario = await User.findOne({ where: { id: funcionarioId, funcionario: true } });
@@ -109,6 +109,23 @@ router.put('/chamados/:chamadoId/status', async (req, res) => {
     await chamado.save();
 
     res.status(200).json({ message: 'Status atualizado para true.', chamado });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.post('/funcionario/', async (req, res) => {
+  try {
+    const { funcionarioId } = req.body;
+    const funcionario = await User.findOne({ where: { id: funcionarioId, funcionario: false } });
+    if (!funcionario) {
+      return res.status(400).json({ message: 'Funcionário não encontrado.' });
+    }
+
+    funcionario.funcionario = true;
+    await funcionario.save();
+
+    res.status(200).json({ message: 'Funcionario atualizado para true.', funcionario });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
