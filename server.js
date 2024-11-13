@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const routesChamados = require('./src/routes/routesChamados');
+const cors = require("cors")
 // const { getConnection } = require('./src/database/database');
 const sequelize = require('./src/database/database');
 
@@ -10,6 +11,10 @@ const PORT = 3000;
 app.use(bodyParser.json());
 
 app.use('/', routesChamados);
+
+app.use(cors({
+  origin: "*"
+}))
 
 // Sincroniza as models com o banco de dados
 sequelize.sync({ force: false }) // `force: true` recria tabelas sempre que o app é reiniciado
