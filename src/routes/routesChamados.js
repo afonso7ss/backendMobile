@@ -34,7 +34,8 @@ router.post('/chamados/:userId', async (req, res) => {
 router.get('/users', async (req, res) => {
     try {
         const user = await User.findAll();
-        res.json(user);
+        res.status(200).json(user);
+        console.log('user', user);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
