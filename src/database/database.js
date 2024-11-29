@@ -1,18 +1,12 @@
 const { Sequelize } = require('sequelize');
 require('dotenv').config();
 
-const dbConfig = {
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME
-};
+// URL de conexão pública
+const databaseUrl = 'mysql://root:yqSGzGfCuiIvOazXLMajeWsxjIpKiPLU@autorack.proxy.rlwy.net:51059/railway';
 
-// Configurando a conexão com o MySQL
-const sequelize = new Sequelize(dbConfig.database, dbConfig.user, dbConfig.password, {
-  host: dbConfig.host,
+const sequelize = new Sequelize(databaseUrl, {
   dialect: 'mysql',
-  logging: false, // Desativa logs SQL no console
+  logging: false, // Desativa logs SQL no console
 });
 
 (async () => {
