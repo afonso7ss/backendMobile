@@ -50,3 +50,18 @@ exports.createChamado = async (descricao, categoria, local) => {
   }
 };
 
+exports.updateChamadoStatus = async (chamadoId, status) => {
+  try {
+    const connection = await db.getConnection();
+    const [result] = await connection.execute(
+      'UPDATE chamado SET status = ? WHERE id = ?',
+      [status, chamadoId]
+    );
+    await connection.end();
+    return result.affectedRows > 0; // Retorna verdadeiro se o chamado foi atualizado
+  } catch (error) {
+    throw error;
+  }
+};
+
+

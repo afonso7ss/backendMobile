@@ -28,3 +28,16 @@ exports.login = async (req, res) => {
     
   }
 }
+exports.updateChamadoStatus = async (req, res) => {
+  const { chamadoId } = req.params;
+  const { status } = req.body;
+  try {
+    const updated = await chamadoService.updateChamadoStatus(chamadoId, status);
+    if (!updated) {
+      return res.status(404).json({ message: 'Chamado não encontrado.' });
+    }
+    res.status(200).json({ message: 'Status atualizado com sucesso!' });
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao atualizar chamado.' });
+  }
+};
