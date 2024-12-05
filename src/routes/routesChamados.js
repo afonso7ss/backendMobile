@@ -141,32 +141,31 @@ router.post('/funcionario/', async (req, res) => {
     if (!funcionario) {
       return res.status(400).json({ message: 'Funcionário não encontrado.' });
     }
-
     funcionario.funcionario = true;
     await funcionario.save();
-
     res.status(200).json({ message: 'Funcionario atualizado para true.', funcionario });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+}); // Feche aqui o bloco do POST
 
-  router.put('/chamados/:chamadoId', async (req, res) => {
-    try {
-      const { chamadoId } = req.params;
-      const { status } = req.body; // status: true ou false
-      const chamado = await Chamado.findByPk(chamadoId);
-      if (!chamado) {
-        return res.status(404).json({ message: 'Chamado não encontrado.' });
-      }
-  
-      chamado.status = status;
-      await chamado.save();
-      return res.status(200).json({ message: 'Status atualizado com sucesso.', chamado });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+// Agora defina a rota PUT fora do POST /funcionario/
+router.put('/chamados/:chamadoId', async (req, res) => {
+  try {
+    const { chamadoId } = req.params;
+    const { status } = req.body; // status: true ou false
+    const chamado = await Chamado.findByPk(chamadoId);
+    if (!chamado) {
+      return res.status(404).json({ message: 'Chamado não encontrado.' });
     }
-  });
-  
+
+    chamado.status = status;
+    await chamado.save();
+    return res.status(200).json({ message: 'Status atualizado com sucesso.', chamado });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
+
 
 module.exports = router;
