@@ -18,6 +18,25 @@ router.post('/users', async (req, res) => {
     }
 });
 
+// Breno: login do usuario
+// router.post('/login', async (req, res) => {
+router.post('/auth/login', async (req, res) => {
+  try {
+    const { matricula, password } = req.body;
+    const user = await User.findOne({ where: {
+      matricula: matricula,
+      password: password,
+    }});
+    if(user != null) {
+      return res.status(200).json(user); 
+    } else {
+      return res.status(404).json({message: "userrr not found"}); 
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Breno: criar um chamado, relacionado aquele usuario
 router.post('/chamados/:userId', async (req, res) => {
   try {
